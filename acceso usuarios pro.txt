@@ -1,0 +1,34 @@
+USUARIO SETI
+=============
+usuario: danielgaleano
+contraseña: Drpimi2025**
+
+correo o teams 
+==============
+correo: drgalean@nequi.com
+contraseña: Noviembre940730*/
+
+Dynatrace
+=========
+correo: danielgaleano@seti.com.co
+contraseña: Diciembre940730*/
+
+Grafana
+=======
+correo: drgalean@nequi.com
+contraseña: Diciembre940730*/
+
+OpenSearch
+==========
+correo: drgalean
+contraseña: Passw0rd*
+
+Udemy Seti SA
+=============
+correo : lideresdeservicio@seti.com.co
+contraseña : Proyecto_Bancolombia
+
+nodo de hot 1.9tb
+nodo de warm 20tb
+
+

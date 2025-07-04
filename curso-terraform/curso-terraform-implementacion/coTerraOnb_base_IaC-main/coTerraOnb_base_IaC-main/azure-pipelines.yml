@@ -1,0 +1,55 @@
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+      - release
+  paths:
+    exclude:
+      - .azure-pipelines
+      - README.md
+      - azure-pipelines.yml
+
+pr:
+  branches:
+    exclude:
+      - "*"
+
+pool:
+  name: 'Nequi Build'
+
+parameters:
+  - name: workingDirectory
+    displayName: 'Funcionalidad a ejecutar'
+    type: string
+    default: 'transversal'
+    values:
+      - transversal
+      - base
+
+resources:
+  repositories:
+    - repository: terraform_pipeline_ref
+      type: github
+      endpoint: 'NequiGithub'
+      name: NequiTI/terraform_pipeline_ref
+      ref: refs/heads/trunk
+
+variables:
+  - ${{ if eq(variables[Build.SourceBranch], refs/heads/main) }}:
+    - group: ${{ variables[Build.DefinitionName] }}-main
+  - ${{ elseif eq(variables[Build.SourceBranch], refs/heads/release) }}:
+    - group: ${{ variables[Build.DefinitionName] }}-release
+  - ${{ elseif eq(variables[Build.SourceBranch], refs/heads/stage) }}:
+    - group: ${{ variables[Build.DefinitionName] }}-stage
+  - ${{ elseif eq(variables[Build.SourceBranch], refs/heads/sbx) }}:
+    - group: ${{ variables[Build.DefinitionName] }}-sbx
+  - ${{ else }}:
+    - group: ${{ variables[Build.DefinitionName] }}-develop
+
+stages:
+  - template: reference_template.yml@terraform_pipeline_ref
+    parameters:
+      capacity: 'coTerraOnb'
+      functionality: '${{ parameters.workingDirectory }}'
+      workingDirectory: '${{ parameters.workingDirectory }}'

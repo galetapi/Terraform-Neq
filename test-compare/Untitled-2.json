@@ -1,0 +1,403 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:177333342796:task-definition/task-mpf0041-bring-money-cmd-qa:47",
+    "containerDefinitions": [
+        {
+            "name": "install-oneagent2",
+            "image": "public.ecr.aws/docker/library/alpine:3",
+            "cpu": 0,
+            "memory": 128,
+            "links": [],
+            "portMappings": [],
+            "essential": false,
+            "entryPoint": [
+                "/bin/sh",
+                "-c"
+            ],
+            "command": [
+                "ARCHIVE=$(mktemp) && wget -O $ARCHIVE \"$DT_API_URL/v1/deployment/installer/agent/unix/paas/latest?Api-Token=$DT_PAAS_TOKEN&$DT_ONEAGENT_OPTIONS\" && unzip -o -d /opt/dynatrace/oneagent $ARCHIVE && rm -f $ARCHIVE"
+            ],
+            "environment": [
+                {
+                    "name": "DT_ONEAGENT_OPTIONS",
+                    "value": "default"
+                },
+                {
+                    "name": "DT_API_URL",
+                    "value": "zst49022.live.dynatrace.com/api"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [
+                {
+                    "sourceVolume": "oneagent",
+                    "containerPath": "/opt/dynatrace/oneagent"
+                }
+            ],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "DT_PAAS_TOKEN",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:177333342796:secret:QA/dynatrace/oneagent/ecs-zst49022-wasioK:token::"
+                }
+            ],
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "extraHosts": [],
+            "dockerSecurityOptions": [],
+            "dockerLabels": {},
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "aws-ecs-mpf0041-bring-money-cmd-qa",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "oneagent"
+                },
+                "secretOptions": []
+            },
+            "systemControls": [],
+            "credentialSpecs": []
+        },
+        {
+            "name": "mpf0041-bring-money-cmd-qa",
+            "image": "177333342796.dkr.ecr.us-east-1.amazonaws.com/mpf0041-bring-money-cmd:qa",
+            "cpu": 0,
+            "links": [],
+            "portMappings": [
+                {
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [
+                {
+                    "name": "DIFFIE_HELLMAN_HOST",
+                    "value": "https://lbecsmqbridgeqa.bancadigital.com.co:443"
+                },
+                {
+                    "name": "URL_SQS_PAYONEER_FINISH_TX",
+                    "value": "https://sqs.us-east-1.amazonaws.com/177333342796/sqs-payoneer-finish-tx-qa"
+                },
+                {
+                    "name": "uriApiPayoneer",
+                    "value": "https://api.sandbox.payoneer.com/v4"
+                },
+                {
+                    "name": "EXCHANGE_RATE_TYPE_ENTITY",
+                    "value": "NEQ"
+                },
+                {
+                    "name": "profile",
+                    "value": "dev"
+                },
+                {
+                    "name": "EXCHANGE_RATE_PATH",
+                    "value": "/componente-adaptador-nequi/foreign-currency/rates/{currency}/{operationType}/{branchType}"
+                },
+                {
+                    "name": "CACHE_DURATION",
+                    "value": "300"
+                },
+                {
+                    "name": "APP_VALIDATE_SOFTTOKEN_HOST",
+                    "value": "https://lbwasawsqa.bancadigital.com.co"
+                },
+                {
+                    "name": "APP_VALIDATE_SOFTTOKEN_PATH",
+                    "value": "/api/v1/softtoken"
+                },
+                {
+                    "name": "DIFFIE_HELLMAN_READ_TIMEOUT",
+                    "value": "10000"
+                },
+                {
+                    "name": "DIFFIE_HELLMAN_PATH",
+                    "value": "/api/v1/security/diffiehellman"
+                },
+                {
+                    "name": "APP_VALIDATE_SOFTTOKEN_CONNECTION_TIMEOUT",
+                    "value": "10000"
+                },
+                {
+                    "name": "FINACLE_HTTP_PATH",
+                    "value": "/FISERVLET/fihttp"
+                },
+                {
+                    "name": "PATH_PAYONEER_PAYMENTSTATUS",
+                    "value": "/accounts/{account_id}/payments/{payment_id}"
+                },
+                {
+                    "name": "APP_VALIDATE_SOFTTOKEN_READ_TIMEOUT",
+                    "value": "10000"
+                },
+                {
+                    "name": "EXCHANGE_RATE_HOST",
+                    "value": "https://adaptadorqa.bancadigital.com.co:4443"
+                },
+                {
+                    "name": "CACHE_SIZE",
+                    "value": "10"
+                },
+                {
+                    "name": "FINACLE_HTTP_HOST",
+                    "value": "https://lbnatawsqa.bancadigital.com.co:9997"
+                },
+                {
+                    "name": "DIFFIE_HELLMAN_CONNECTION_TIMEOUT",
+                    "value": "10000"
+                },
+                {
+                    "name": "LD_PRELOAD",
+                    "value": "/opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so"
+                },
+                {
+                    "name": "KMS_ARN",
+                    "value": "arn:aws:kms:us-east-1:177333342796:key/d100bd5f-8771-4a15-8817-2c55f290d328"
+                },
+                {
+                    "name": "PATH_PAYONEER_COMMIT",
+                    "value": "/accounts/{account_id}/payments/{commit_id}"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [
+                {
+                    "sourceVolume": "oneagent",
+                    "containerPath": "/opt/dynatrace/oneagent"
+                }
+            ],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "programId",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:177333342796:secret:dev/CREDENTIALS/SHERPA/PAYONEER:program_id::"
+                },
+                {
+                    "name": "DIFFIE_HELLMAN_WAS_USER",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:177333342796:secret:QA/WAS/WS_USER/-yXRC1R:username::"
+                },
+                {
+                    "name": "DIFFIE_HELLMAN_WAS_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:177333342796:secret:QA/WAS/WS_USER/-yXRC1R:password::"
+                },
+                {
+                    "name": "EXCHANGE_RATE_CLIENT_ID",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:177333342796:secret:QA/CREDENTIALS/SHERPA/FULLRATE:clientId::"
+                },
+                {
+                    "name": "EXCHANGE_RATE_CLIENT_SECRET",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:177333342796:secret:QA/CREDENTIALS/SHERPA/FULLRATE:clientSecret::"
+                },
+                {
+                    "name": "SECURITY_WAS_USER",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:177333342796:secret:QA/WAS/WS_USER/-yXRC1R:username::"
+                },
+                {
+                    "name": "SECURITY_WAS_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:177333342796:secret:QA/WAS/WS_USER/-yXRC1R:password::"
+                }
+            ],
+            "dependsOn": [
+                {
+                    "containerName": "install-oneagent2",
+                    "condition": "COMPLETE"
+                }
+            ],
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "extraHosts": [],
+            "dockerSecurityOptions": [],
+            "dockerLabels": {},
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awsfirelens",
+                "options": {
+                    "Type": "doc",
+                    "log-driver-buffer-limit": "10485760",
+                    "Aws_Auth": "true",
+                    "Suppress_Type_Name": "On",
+                    "Port": "443",
+                    "Host": "vpc-apt0002-os-qa-co-01-4kuslqpzvvaljguiyyjoq7wb6a.us-east-1.es.amazonaws.com",
+                    "Index": "bring-money-cmd-mpf0041-qa",
+                    "tls": "true",
+                    "Aws_Region": "us-east-1",
+                    "Name": "es"
+                },
+                "secretOptions": []
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl -f http://localhost:8080/actuator/health || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3,
+                "startPeriod": 150
+            },
+            "systemControls": [],
+            "credentialSpecs": []
+        },
+        {
+            "name": "log_router2",
+            "image": "177333342796.dkr.ecr.us-east-1.amazonaws.com/fluent-bit-microservices:latest",
+            "cpu": 0,
+            "links": [],
+            "portMappings": [],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [],
+            "user": "0",
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "extraHosts": [],
+            "dockerSecurityOptions": [],
+            "dockerLabels": {},
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "aws-ecs-mpf0041-bring-money-cmd-qa",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": [],
+            "firelensConfiguration": {
+                "type": "fluentbit",
+                "options": {}
+            },
+            "credentialSpecs": []
+        }
+    ],
+    "family": "task-mpf0041-bring-money-cmd-qa",
+    "taskRoleArn": "arn:aws:iam::177333342796:role/ecs-mpf0041-bring-money-cmd-role-qa",
+    "executionRoleArn": "arn:aws:iam::177333342796:role/ecs-mpf0041-bring-money-cmd-role-qa",
+    "networkMode": "awsvpc",
+    "revision": 47,
+    "volumes": [
+        {
+            "name": "oneagent",
+            "host": {}
+        }
+    ],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "ecs.capability.logging-driver.awsfirelens.log-driver-buffer-limit"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awsfirelens"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.container-health-check"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.firelens.fluentbit"
+        },
+        {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+        },
+        {
+            "name": "ecs.capability.container-ordering"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024",
+    "registeredAt": "2024-12-23T15:45:45.782Z",
+    "registeredBy": "arn:aws:sts::177333342796:assumed-role/cloudformation-service-deployment-role/AWSCloudFormation",
+    "tags": [
+        {
+            "key": "map-migrated",
+            "value": "migYI61VXQDWG"
+        },
+        {
+            "key": "owner",
+            "value": "delta"
+        },
+        {
+            "key": "country",
+            "value": "co"
+        },
+        {
+            "key": "environment",
+            "value": "qa"
+        },
+        {
+            "key": "ProjectName",
+            "value": "bring-money-cmd"
+        },
+        {
+            "key": "pci",
+            "value": "false"
+        },
+        {
+            "key": "availability",
+            "value": "critical"
+        },
+        {
+            "key": "bia",
+            "value": "false"
+        },
+        {
+            "key": "env",
+            "value": "qa"
+        },
+        {
+            "key": "sox",
+            "value": "false"
+        },
+        {
+            "key": "deployment",
+            "value": "cloudformation"
+        }
+    ]
+}

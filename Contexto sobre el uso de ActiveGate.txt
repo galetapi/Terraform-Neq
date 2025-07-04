@@ -1,0 +1,93 @@
+Contexto sobre el uso de ActiveGate para monitorear múltiples cuentas en AWS con Dynatrace
+
+En entornos empresariales que usan Dynatrace para observabilidad, es común tener múltiples cuentas de AWS separadas por áreas, proyectos o ambientes (producción, pruebas, etc.). En lugar de instalar y administrar un componente de monitoreo (ActiveGate) en cada cuenta, se puede usar un ActiveGate centralizado, instalado en una sola cuenta, para monitorear todas las demás.
+
+El ActiveGate actúa como un puente seguro entre Dynatrace y los servicios en la nube. Cuando se centraliza en una cuenta, se configura para asumir roles IAM en las cuentas adicionales, lo cual le permite acceder a los datos necesarios (como métricas de CloudWatch, etiquetas, uso de servicios, etc.).
+
+Esta arquitectura reduce la complejidad, mejora la administración y evita duplicación de infraestructura, manteniendo una visión unificada del ecosistema de AWS desde Dynatrace.
+
+
+Contexto técnico: Monitoreo multi-cuenta en AWS usando un ActiveGate centralizado (Dynatrace)
+
+Dynatrace utiliza el componente ActiveGate para interactuar con servicios cloud como AWS, especialmente para integraciones que requieren comunicación segura, como la recolección de métricas desde CloudWatch, detección de recursos, y trazabilidad de logs o eventos.
+
+En un entorno multi-cuenta de AWS, donde se manejan varias cuentas (por ejemplo: producción, QA, desarrollo, etc.), es posible centralizar la infraestructura de monitoreo usando un solo ActiveGate instalado en una cuenta principal.
+¿Cómo funciona?
+
+    ActiveGate se instala en una instancia EC2 dentro de la cuenta principal.
+
+    Desde Dynatrace, se configura la integración de AWS por cada cuenta secundaria que se desea monitorear.
+
+    Para permitir que el ActiveGate acceda a los datos de las otras cuentas:
+
+        Se crean roles IAM delegados en cada cuenta secundaria.
+
+        Se otorgan permisos para que el ActiveGate asuma esos roles a través de STS (Security Token Service).
+
+        Los roles permiten acceso a servicios como CloudWatch, EC2, Lambda, etc., dependiendo de lo que se quiera monitorear.
+
+Dynatrace usa el ActiveGate para ejecutar llamadas a la API de AWS desde la cuenta central, asumiendo los roles temporales en cada cuenta monitoreada.
+
+Ventajas:
+
+    Reducción de complejidad: no se requiere un ActiveGate por cuenta.
+
+    Escalabilidad: permite monitorear decenas o cientos de cuentas de forma centralizada.
+
+    Seguridad: aprovecha políticas IAM bien controladas, sin necesidad de abrir tráfico directo desde cada cuenta a Dynatrace.
+
+    Ahorro de costos: menos recursos corriendo y más fácil mantenimiento.
+
+
+
+ActiveGate se instala en una instancia EC2 dentro de la cuenta principal. cloudopspdn
+
+Cuenta Secundaria, se configura la integración de AWS por cada cuenta secundaria que se desea monitorear.
+
+ Dynatrace 
+ 
+ Para permitir que el ActiveGate acceda a los datos de las otras cuentas:
+
+  - Se crean roles IAM delegados en cada cuenta secundaria.
+
+  - Se otorgan permisos para que el ActiveGate asuma esos roles a través de STS (Security Token Service).
+
+ 
+Los roles permiten acceso a servicios como CloudWatch, EC2, Lambda, etc., dependiendo de lo que se quiera monitorear.
+
+
+Dynatrace usa el ActiveGate para ejecutar llamadas a la API de AWS desde la cuenta central, asumiendo los roles temporales en cada cuenta monitoreada.
+
+
+
+RECUERDA QUE SE ESTA USANDO EL AMI QUE NOS DIO LEO (Jorge Leonardo Henao Uribe)
+ami-0545aea63506a5d12
+
+
+
+
+DYNATRACE COSTO DE API AL (EXTRAER LA INFORMACION CON LOS COSTOS) DIEGO ENCISO LLAMADOS A LA API
+================================================================================================
+PDN -- validar con Diego  
+QC Y STG -- validar el alcance
+
+ARTEMISA Y SHERPA
+
+también se construyo el template de cloudformation para el adom y se valido con Estefa que todo este bien a nivel de template
+
+
+Role_MonitoringAG_Dynatrace
+Role_MonitoringAG_Dynatrace_Policy
+
+ARBOL LIMPIO EN GITHUB
+###############################
+rm -rf .git
+git init
+git remote add origin https://github.com/galetapi/Terraform-Neq.git
+git add .
+git commit -m "Clean history: proyecto reiniciado sin secretos"
+git branch -M master
+git push -f origin master
+
+
+

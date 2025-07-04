@@ -1,0 +1,43 @@
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+      - release
+  paths:
+    exclude:
+      - .azure-pipelines
+      - README.md
+      - azure-pipelines.yml
+
+pr:
+  branches:
+    exclude:
+      - "*"
+
+pool:
+  name: 'Nequi Build'
+
+parameters:
+  - name: workingDirectory
+    displayName: 'Funcionalidad a ejecutar'
+    type: string
+    default: 'transversal'
+
+resources:
+  repositories:
+    - repository: terraform_pipeline_ref
+      type: github
+      endpoint: 'NequiGithub'
+      name: NequiTI/terraform_pipeline_ref
+      ref: refs/heads/trunk
+
+variables:
+  - template: '${{ parameters.workingDirectory }}/.azure-pipelines/vars.yml'
+
+stages:
+  - template: reference_template.yml@terraform_pipeline_ref
+    parameters:
+      capacity: 'terraformExamples'
+      functionality: '${{ parameters.workingDirectory }}'
+      workingDirectory: '${{ parameters.workingDirectory }}'

@@ -1,0 +1,169 @@
+WIKI --- ok 
+====
+estructura del equipo ----> ok
+
+quienes son los del equipo ---> ok
+
+permiso en Azure ---> ok
+
+permiso a GitHub ---> ok
+
+permiso en Opensearch --> ok
+
+permiso en dynatrace --> ok
+
+permiso hélix 
+ 
+
+//////////////////////////////////////////////////////
+OpenSearch ---> ok
+==========
+revisar los host índices que no esten mayor a 150gb  si el problema es muy grave , montar caso AWS
+
+balance-cor0028-pdn-ism-000275   HOT_TO_WARM
+fraud-monitoring-pdn-ism-000001     HOT_TO_WARM
+loyalty-adminminibanner-pdn-ism-000001-reindex  HOT_TO_WARM
+
+
+
+/////////////////////////////////////////////////////////// en curso
+Terraform AWS
+=============
+john Jairo aws auto scaling group si se puede hacer sin balanceador de carga 
+ec2 
+que se caiga el Docker y intente subir de nuevo el Docker
+AWS EC2 TERRAFORM
+
+Jorge leonardo Uribe Y PREGUNTARLE SOBRE DE ARCHITECTURA DE LA INFRA 
+Observabilidad ami nueva Golden ami trae ya dynatrece o vieja 
+
+
+////////////////////////////////////////////////////////////
+RDS AWS MONITOREO
+=================
+TEMA con Julian
+Este tema por favor Daniel va con vos
+ 
+para sacar ese tema adelante
+ 
+https://docs.dynatrace.com/docs/setup-and-configuration/amazon-web-services/integrate-with-aws/aws-all-services/aws-service-relational-database-service-rds-builtin
+Amazon RDS (Relational Database Service) (built-in) monitoring
+Monitor Amazon RDS and view available metrics.
+ 
+nosotros utilizamos un activegate
+
+es por medio de una etiqueta en el recurso de aws (pruebas de contexto) 
+apoyense con Mariana
+mariana revisar el tag de dynatrace
+
+habilitadores
+=============
+habilitador con julian rds
+habilitador Opensearch
+ 
+
+Crear DOCUMENTACION EN WORD
+==========================================
+Indice opensearch con yohan visual de logs   READY 
+==========================================
+pse-co-achpsecashout-qa
+transaction-co-credi-trans-ms-pdn
+
+
+CREACION PATRON OPENSEARCH (PATRON DE BUSQUEDA)
+=========================================
+índice de opensearch para visual de patrón de logs 
+
+RUTA PRD => stack management - indexpatterns /app/management/opensearch-dashboards/indexPatterns
+transaction-co-*-pdn*
+
+RUTA QA => Dashboards Management - indexpatterns /app/management/opensearch-dashboards/indexPatterns
+pse-co-*-qa*
+
+orq-envio-digital-*-pdn*     
+creditos-co-*-qa* 
+
+
+
+CREACION USUARIO OPENSEARCH
+===========================
+RUTA PRD => Security - Internal users /app/security-dashboards-plugin#/users
+se coloca el usuario y la contraseña ejemplo(danbon Passw0rd*) créate
+luego vamos para los roles y buscamos readall_and_monitor y entramos en el 
+Mapped users - Manage mapping --> CLICK aca mapeamos el usuario en la lista
+en este caso danbon y le damos MAP y ya quedo
+
+
+STORAGE QA OPENSEARCH subir a 4 nodos mas 
+aws
+Luis Felipe sabela
+
+revison julian rds tag
+revisión con john tema de grupo de seguridad conectividad 
+verificacion y update de la documentación de la wiki 
+revisión  opensearch revisión performace 
+
+Stevenson  10.30 a 11
+yonan 
+john 
+diego
+
+miércoles en la tarde Recurrence Dynatrace 2 a 5pm 
+
+REALIZACION TAREAS 
+===================
+patron openseracrh  --- ok
+usuario opensaerach --- ok
+wiki documentación con equipo y reseña observabilidad --- ok
+opensearch performace al almacenamiento --- ok
+opensearch se trabajo en la generación de patrones --- status
+también se realizo la performarce a sherpa y ala control ya que los nodos estaban superando el lumbral del disco
+lo cual aun se sigue trabajando 
+por otra parte la realización y organización del desarrollo Python para opensearch
+
+
+--- status
+-refinamiento de aws ec2 infra equipo de arquitectura dieron el repositorio capacidad y Golden AMI ---> PENDIENTE
+-tambien con el equipo se sustento y se realizo ajuste desarrollo Python ----> PENDIENTE
+-rds aws conexión por medio de etiqueta para logs métricas esta pendiente la ventana de mantenimiento para realizacion de esta----> PENDIENTE CON DIEGO , SIN REALIZAR TABLEROS
+-agente instalación quedo ambos el de zabbix y dynatrce en ejecución , se envia logs a Stevenson por alto consumo del agente 
+- Opensearch performance ct y por otra parte las tareas de opensearch el índices y patrones 
+
+ENVIAR CORREO USUARIO CREADO 
+
+subir el storage de opensearch de qa a 4 nodos mas -------------> PENDIENTE
+
+EN EJECUCION TERRAFORM EC2 CURSO UDEMY SETI
+
+ayuda al equipo de la pantalla grande sobre temas de DQL
+
+sherpa --- bancolombia
+CT -- CO-Cloudops-PDN
+
+
+backog Osirris
+
+
+
+CREACION USUARIO DYNATRACE ADMIN
+================================
+Access managenet  -- indentity y Access mmanagement -- people ---> invite user
+(Recordar que esto esta en configuración cuanta donde se ve el nombre Daniel Galeano)
+
+
+Trabajo Diego en Vacaciones
+===========================
+apoyando a tema de openserarch, y Observabilidad y monitoreo Guatemala y sergio sobre tamas de opensearch
+grafana 
+y tema de yohan apoyo a auditoria , 
+apoyo a jeferson identificando error de visual de los del indice en prd
+Validación del desarrollo de Python para métricas de Dynatrace 
+Release Validation [Nequi] - trabajando en  slo a consulta dql jose y Daniel, 
+trabajo implementación de infraestructura EC2 por medio de terraform iac 
+
+
+se dio apoyo a openserach 
+incidencia de aws y opensearch de apoyo a jeferson(ajustes endpoint del ecs) y sergio (index)
+se estuvo revisando el pod con arquitectura sobre el tema de la infraestructura IaC en terraform
+
+

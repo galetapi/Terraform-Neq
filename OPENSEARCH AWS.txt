@@ -1,0 +1,189 @@
+OPENSEARCH AWS
+
+#################################
+#######REINDEX WORKFLOW ############### utilizacion final
+DELETE loyalty-adminminibanner-pdn-ism-000001
+DELETE /loyalty-adminminibanner-pdn-ism-000002
+DELETE account-transaction-limits-ms-pdn-ism-000003
+DELETE loyalty-adminminibanner-pdn-ism-000005
+
+
+#Creación de nuevo índice
+PUT loyalty-adminminibanner-pdn-ism-000005-reindex
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 20,
+      "number_of_replicas": 1
+    }
+  }
+}
+
+
+#Reindex
+POST _reindex/?pretty=true&scroll=24h&wait_for_completion=true&slices=auto
+{
+   "source":{
+      "index":"loyalty-adminminibanner-pdn-ism-000005"
+   },
+   "dest":{
+      "index":"loyalty-adminminibanner-pdn-ism-000005-reindex"
+   }
+}
+
+
+## Reindex con query
+POST _reindex/?pretty=true&scroll=24h&wait_for_completion=true&slices=auto
+{
+  "source": {
+    "index": "nequilogs-wlp-messages-ism-001965",
+    "query": {
+      "range": {
+        "@timestamp": {
+          "gte": "2024-08-16T00:00:00",
+          "lte": "2024-08-16T23:59:59"
+        }
+      }
+    }
+  },
+  "dest": {
+    "index": "nequilogs-wlp-messages-ism-001965-reindex004"
+  }
+}
+
+
+######COLA######
+GET /_tasks
+
+GET _tasks?actions=*reindex&detailed
+
+
+GET _cat/health?v
+
+########Pasar a UltraWarm manual###################################
+POST /_ultrawarm/migration/balance-cor0028-pdn-ism-000273/_warm
+
+########estado de migracion manual#################################
+GET /_ultrawarm/migration/balance-cor0028-pdn-ism-000274/_status
+
+
+####################################################################################################################
+
+#remueve politica
+POST _plugins/_ism/remove/ec-ctrll-ecrbm-pdn-ism-000003
+{
+  "policy_id": "ec-ctrll-ecrbm-pdn-ism-policy"
+}
+
+#agrega politica
+POST _plugins/_ism/add/ec-ctrll-ecrbm-pdn-ism-000004
+{
+  "policy_id": "ec-ctrll-ecrbm-pdn-ism-policy"
+}
+
+#cambio politica y estado
+POST _opendistro/_ism/change_policy/ec-ctrll-ecrbm-pdn-ism-000006
+{
+  "policy_id": "ec-ctrll-ecrbm-pdn-ism-policy",
+  "state": "warm",
+  "include": [
+    {
+      "state": "hot"
+    }
+  ]
+}
+
+#ejecucion o rollover del indice
+POST /user-auth-lgc-ms-pdn/_rollover/
+POST /ec-ctrll-ecrbm-pdn/_rollover 
+POST /fraud-monitoring-pdn/_rollover/
+
+
+GET _cat/aliases
+
+GET /_alias/ec-ctrll-ecrbm-pdn
+
+GET /_alias/ec-rbm-proxy-ecrbm-pdn
+
+GET /_alias/ec-ctrll-ecrbm-pdn
+
+POST /_aliases
+{
+  "actions": [
+    {
+      "add": {
+        "index": "ec-ctrll-ecrbm-pdn-ism-000006",
+        "alias": "ec-ctrll-ecrbm-pdn",
+        "is_write_index": true
+      }
+    }
+  ]
+}
+
+GET /_alias/ec-ctrll-ecrbm-pdn
+
+POST /_ultrawarm/migration/balance-cor0028-pdn-ism-000275/_warm
+GET /_ultrawarm/migration/balance-cor0028-pdn-ism-000275/_status
+
+
+POST /_ultrawarm/migration/fraud-monitoring-pdn-ism-000001/_warm
+GET /_ultrawarm/migration/fraud-monitoring-pdn-ism-000001/_status
+
+POST /_ultrawarm/migration/loyalty-adminminibanner-pdn-ism-000001-reindex/_warm
+GET /_ultrawarm/migration/loyalty-adminminibanner-pdn-ism-000001-reindex/_status
+
+POST /_ultrawarm/migration/loyalty-adminminibanner-pdn-ism-000002-reindex/_warm
+GET /_ultrawarm/migration/loyalty-adminminibanner-pdn-ism-000002-reindex/_status
+
+POST /_ultrawarm/migration/account-transaction-limits-ms-pdn-ism-000003-reindex/_warm
+GET /_ultrawarm/migration/account-transaction-limits-ms-pdn-ism-000003-reindex/_status
+
+POST /_ultrawarm/migration/loyalty-adminminibanner-pdn-ism-000005-reindex/_warm
+GET /_ultrawarm/migration/loyalty-adminminibanner-pdn-ism-000005-reindex/_status
+
+
+GET /account-transaction-limits-ms-pdn-ism-000003/_settings
+
+GET /_tasks?detailed=true&actions=*reindex
+
+GET /balance-cor0028-pdn-ism-000273/_settings
+
+
+GET /_cat/nodes?v
+
+GET /_cat/indices?v&h=index,store.size&s=store.size:desc
+
+
+######################nodo de HOT
+GET /_cat/indices?v&h=index,store.size | grep -E '323afaa690e1a12034d9884aa8d8ad74'
+
+######################nodo de Warm
+GET /_cat/indices?v&h=index,store.size | grep -E 'ea87d9e1215403321f61e9d66fdb6acf'
+
+
+GET /_cat/shards?v&h=index,shard,prirep,state,node
+
+
+################# estado de los indices de Hot a Warm 
+GET /_ultrawarm/migration/_status
+
+
+GET /_snapshot/_status
+
+
+
+GET /_cluster/health
+
+
+
+
+
+
+
+
+
+
+
+
+
+
